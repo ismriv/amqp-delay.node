@@ -1,7 +1,7 @@
 # amqp-delay.node
 [![NPM version][npm-image]][npm-url]
 
-Publish messages to RabbitMQ immediately, but delay by certain time when queue consumers receive these messages. The AMQP protocol does not support this directly, but RabbitMQ's AMQP [Dead-Letter Exchanges](https://www.rabbitmq.com/dlx.html) extension we can easily achieve this functionality.
+Publish messages to RabbitMQ immediately, but queue consumers will only receive these messages after a certain delay. The AMQP protocol does not support this directly, but RabbitMQ's AMQP [Dead-Letter Exchanges](https://www.rabbitmq.com/dlx.html) extension we can easily achieve this functionality.
 
 Inspired by [node-amqp-schedule](https://github.com/purposeindustries/node-amqp-schedule), but built for [amqplib](https://github.com/squaremo/amqp.node).
 
