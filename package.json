@@ -1,5 +1,5 @@
 {
-  "name": "amqp-retry.node",
+  "name": "amqp-delay.node",
   "description": "Publish messages to RabbitMQ with a delay.",
   "version": "0.1.0",
   "keywords": [
@@ -8,7 +8,7 @@
     "amqplib",
     "delay"
   ],
-  "repository": "git://github.com/ismriv/amqp-retry.node.git",
+  "repository": "git://github.com/ismriv/amqp-delay.node.git",
   "author": "Ismael Rivera <me@ismaelrivera.es>",
   "dependencies": {
     "amqplib": "0.3.x"
