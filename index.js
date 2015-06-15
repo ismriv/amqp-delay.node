@@ -8,7 +8,7 @@ module.exports = function delayer(channel, opts) {
   channel.delay = function delay(delayMs) {
     return {
       publish: function publish(exchange, routingKey, content, options) {
-        delayMs = Math.round(delayMs / opts.round) * opts.round;
+        delayMs = Math.ceil(delayMs / opts.round) * opts.round;
 
         var ttl = delayMs;
         var time = { ms: 1000, s: 60, m: 60, h: 24, d: 30, mo: 12, y: 999999 };
@@ -22,19 +22,25 @@ module.exports = function delayer(channel, opts) {
           return mod + unit;
         }).reverse().join('');
 
-        var name = opts.prefix + opts.separator + [exchange, delayMs].join(opts.separator);
+        var name = [opts.prefix, exchange, delayMs].join(opts.separator);
 
-        return channel.assertQueue(name, {
+        return channel.assertExchange(name, 'fanout', {
           durable: true,
-          autoDelete: true,
-          arguments: {
-            'x-dead-letter-exchange': exchange,
-            'x-dead-letter-routing-key': routingKey,
-            'x-message-ttl': ttl,
-            'x-expires': ttl + opts.threshold
-          }
+          autoDelete: true
         }).then(function () {
-          return channel.sendToQueue(name, content, options);
+          return channel.assertQueue(name, {
+            durable: true,
+            autoDelete: true,
+            arguments: {
+              'x-dead-letter-exchange': exchange,
+              'x-message-ttl': ttl,
+              'x-expires': ttl + opts.threshold
+            }
+          });
+        }).then(function () {
+          return channel.bindQueue(name, name, '#');
+        }).then(function () {
+          return channel.publish(name, routingKey, content, options);
         });
       }
     };
