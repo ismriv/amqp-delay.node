@@ -19,7 +19,7 @@ amqp.connect().then(function(conn) {
     require('amqp-delay.node')(channel);
     return channel.delay(3000).publish('foo', 'bar', new Buffer('hello world'));
   });
-}).then(null, console.warn);;
+}).then(null, console.warn);
 ```
 
 [npm-image]: https://img.shields.io/npm/v/amqp-delay.node.svg?style=flat

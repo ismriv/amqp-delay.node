@@ -1,7 +1,7 @@
 {
   "name": "amqp-delay.node",
   "description": "Publish messages to RabbitMQ with a delay.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "amqp",
     "rabbitmq",
