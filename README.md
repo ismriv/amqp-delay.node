@@ -24,3 +24,7 @@ amqp.connect().then(function(conn) {
 
 [npm-image]: https://img.shields.io/npm/v/amqp-delay.node.svg?style=flat
 [npm-url]: https://npmjs.org/package/amqp-delay.node
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT) © Ismael Rivera

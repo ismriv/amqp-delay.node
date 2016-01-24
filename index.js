@@ -5,9 +5,9 @@ module.exports = function delayer(channel, opts) {
   opts.threshold = opts.threshold || 10000;
   opts.round = opts.round || 1000;
 
-  channel.delay = function delay(delayMs) {
+  channel.delay = function (delayMs) {
     return {
-      publish: function publish(exchange, routingKey, content, options) {
+      publish: function (exchange, routingKey, content, options) {
         delayMs = Math.ceil(delayMs / opts.round) * opts.round;
 
         var ttl = delayMs;
