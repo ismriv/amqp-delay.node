@@ -7,7 +7,7 @@ module.exports = function delayer(channel, opts) {
 
   channel.delay = function (delayMs) {
     return {
-      publish: function (exchange, routingKey, content, options) {
+      publish: function (exchange, routingKey, content, options, ...[cb]) {
         delayMs = Math.ceil(delayMs / opts.round) * opts.round;
 
         var ttl = delayMs;
@@ -40,7 +40,7 @@ module.exports = function delayer(channel, opts) {
         }).then(function () {
           return channel.bindQueue(name, name, '#');
         }).then(function () {
-          return channel.publish(name, routingKey, content, options);
+          return channel.publish(name, routingKey, content, options, cb);
         });
       }
     };
