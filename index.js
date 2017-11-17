@@ -7,14 +7,14 @@ module.exports = function delayer(channel, opts) {
 
   channel.delay = function (delayMs) {
     return {
-      publish: function (exchange, routingKey, content, options, ...[cb]) {
+      publish: function (exchange, routingKey, content, options, cb) {
         delayMs = Math.ceil(delayMs / opts.round) * opts.round;
 
-        var ttl = delayMs;
-        var time = { ms: 1000, s: 60, m: 60, h: 24, d: 30, mo: 12, y: 999999 };
+        let ttl = delayMs;
+        let time = { ms: 1000, s: 60, m: 60, h: 24, d: 30, mo: 12, y: 999999 };
 
         delayMs = Object.keys(time).map(function(unit) {
-          var mod = delayMs % time[unit];
+          let mod = delayMs % time[unit];
           delayMs = Math.floor(delayMs / time[unit]);
           if (!mod) {
             return '';
@@ -22,12 +22,12 @@ module.exports = function delayer(channel, opts) {
           return mod + unit;
         }).reverse().join('');
 
-        var name = [opts.prefix, exchange, delayMs].join(opts.separator);
+        let name = [opts.prefix, exchange, delayMs].join(opts.separator);
 
         return channel.assertExchange(name, 'fanout', {
           durable: true,
           autoDelete: true
-        }).then(function () {
+        }).then(() => {
           return channel.assertQueue(name, {
             durable: true,
             autoDelete: true,
@@ -37,9 +37,9 @@ module.exports = function delayer(channel, opts) {
               'x-expires': ttl + opts.threshold
             }
           });
-        }).then(function () {
+        }).then(() => {
           return channel.bindQueue(name, name, '#');
-        }).then(function () {
+        }).then(() => {
           return channel.publish(name, routingKey, content, options, cb);
         });
       }
